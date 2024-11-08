@@ -65,13 +65,13 @@ model = LogisticRegression()
 model.fit(X_train, y_train)
 
 # Đánh giá mô hình
-accuracy = model.score(X_test, y_test)
-print(f"Model accuracy: {accuracy * 100:.2f}%")
+#accuracy = model.score(X_test, y_test)
+#print(f"Model accuracy: {accuracy * 100:.2f}%")
 
 # Kiểm tra dữ liệu
-print("Training data (X_train):", X_train.toarray())
-print("Training labels (y_train):", y_train.tolist())
-print("Cleaned questions:", df['cleaned_question'].tolist())
+#print("Training data (X_train):", X_train.toarray())
+#print("Training labels (y_train):", y_train.tolist())
+#print("Cleaned questions:", df['cleaned_question'].tolist())
 
 app = Flask(__name__)
 
