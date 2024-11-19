@@ -1,0 +1,6 @@
+question,intent,response
+"What are your opening hours?","opening_hours","Our opening hours are from 9 AM to 6 PM."
+"How do I reset my password?","reset_password","To reset your password, click on 'Forgot Password' on the login page."
+"Where is your office located?","office_location","Our office is located at 123 Main Street, City."
+"What is your contact number?","contact_number","You can contact us at 123-456-7890."
+"Can I change my email address?","change_email","You can change your email address in your account settings."
