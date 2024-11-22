@@ -1,33 +1,37 @@
 import pandas as pd
-import nltk
+import string
+
+from underthesea import word_tokenize  # Import tokenization từ underthesea
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LogisticRegression
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import string
 
-# Tải dữ liệu từ tệp CSV
-df = pd.read_csv('data.csv')
+# Lấy dữ liệu từ data
+data = pd.read_csv('data.csv')
+
+# Đọc danh sách stopwords tiếng Việt
+with open('vietnamese_stopwords.txt', 'r', encoding='utf-8') as f:
+    vietnamese_stopwords = set(f.read().splitlines())
+
 
 # Tiền xử lý dữ liệu
-nltk.download('punkt')
-nltk.download('stopwords')
-from nltk.corpus import stopwords
-
 def preprocess_text(text):
-    text = text.lower()
-    text = text.translate(str.maketrans('', '', string.punctuation))
-    tokens = nltk.word_tokenize(text)
-    tokens = [word for word in tokens if word not in stopwords.words('english')]
+    text = text.lower()  # Chuyển sang chữ thường
+    text = text.translate(str.maketrans('', '', string.punctuation))  # Loại bỏ dấu câu
+    tokens = word_tokenize(text)  # Sử dụng underthesea để tách từ
+    tokens = [word for word in tokens if word not in vietnamese_stopwords]  # Loại bỏ từ dừng
     return ' '.join(tokens)
 
-df['cleaned_question'] = df['question'].apply(preprocess_text)
+
+# Tiền xử lý cột câu hỏi
+data['cleaned_question'] = data['question'].apply(preprocess_text)
 
 # Tạo vector cho câu hỏi
 vectorizer = TfidfVectorizer()
-X = vectorizer.fit_transform(df['cleaned_question'])
-y = df['intent']
+X = vectorizer.fit_transform(data['cleaned_question'])
+y = data['intent']
 
 # Chia tập dữ liệu
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -36,17 +40,15 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 model = LogisticRegression()
 model.fit(X_train, y_train)
 
-# Đánh giá mô hình
-accuracy = model.score(X_test, y_test)
-print(f"Model accuracy: {accuracy * 100:.2f}%")
-
-# Khởi tạo Flask
+# Khởi tạo FLASK
 app = Flask(__name__)
 CORS(app)
 
+
 @app.route('/')
 def home():
-    return "Welcome to the Chatbot API! Use the '/ask' endpoint to ask questions."
+    return "Đã chạy Chatbot API."
+
 
 @app.route('/ask', methods=['POST'])
 def ask():
@@ -61,13 +63,15 @@ def ask():
     input_vector = vectorizer.transform([cleaned_input])
     predicted_intent = model.predict(input_vector)[0]
 
-    response = df[df['intent'] == predicted_intent]['response'].values
+    # Trả lời từ dữ liệu
+    response = data[data['intent'] == predicted_intent]['response'].values
     if len(response) > 0:
         response = response[0]
     else:
         response = "Sorry, I couldn't understand your question. Can you rephrase it?"
 
     return jsonify({'response': response})
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

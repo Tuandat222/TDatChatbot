@@ -1,6 +1,7 @@
 question,intent,response
-"What are your opening hours?","opening_hours","Our opening hours are from 9 AM to 6 PM."
-"How do I reset my password?","reset_password","To reset your password, click on 'Forgot Password' on the login page."
-"Where is your office located?","office_location","Our office is located at 123 Main Street, City."
-"What is your contact number?","contact_number","You can contact us at 123-456-7890."
-"Can I change my email address?","change_email","You can change your email address in your account settings."
+"Giờ làm việc của bạn là gì?","opening_hours","Giờ làm việc của chúng tôi là từ 9 giờ sáng đến 6 giờ chiều."
+"Tôi làm thế nào để đặt lại mật khẩu?","reset_password","Để đặt lại mật khẩu, hãy nhấp vào 'Quên mật khẩu' trên trang đăng nhập."
+"Văn phòng của bạn ở đâu?","office_location","Văn phòng của chúng tôi nằm tại 123 Đường Chính, Thành phố."
+"Số liên lạc của bạn là gì?","contact_number","Bạn có thể liên hệ với chúng tôi qua số 123-456-7890."
+"Tôi có thể thay đổi địa chỉ email không?","change_email","Bạn có thể thay đổi địa chỉ email trong cài đặt tài khoản của mình."
+
